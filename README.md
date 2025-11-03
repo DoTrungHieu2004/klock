@@ -9,6 +9,7 @@
 - **Time Management**: Implement sophisticated time handling and interpolation
 - **Architecture**: Practice clean architecture with custom engines
 - **Performance**: Optimize real-time animations and rendering
+- **Theming**: Build a comprehensive design system with Material3
 
 ## 🚀 Features
 
@@ -23,14 +24,15 @@
 - **Language**: Kotlin
 - **UI**: Jetpack Compose
 - **Animation**: Custom Compose animation engine
-- **Architecture**: Custom engine pattern
+- **Architecture**: Custom engine pattern with theming system
 - **Tools**: Android Studio, Gradle Kotlin DSL
 
 ## 📚 Documentation
 
 - [Architecture Guide](docs/ARCHITECTURE.md) - Understanding the custom engines
 - [Learning Journey](docs/LEARNING.md) - Educational notes and concepts
-- [Development Guide](docs/DEVELOPMENT.md) - Getting started
+- [Development Guide](docs/DEVELOPMENT.md) - Getting started and project setup
+- [Theming System](docs/THEMING.md) - Design system and theme architecture
 
 ## 🏗️ Project Structure
 
@@ -46,4 +48,4 @@ app/
 
 ## 🎓 Educational Focus
 
-This project emphasizes understanding **how** things work rather than just making them work. Each component is built with learning in mind.
+This project emphasizes understanding **how** things work rather than just making them work. Each component is built with learning in mind, including our custom theming system that extends Material3.
