@@ -58,3 +58,24 @@ The structure makes it easy to:
 - Add new color schemes
 - Create component-specific styles
 - Support user theme preferences
+
+## 🎯 Testing the Theme System
+
+### Preview System Benefits
+- **Rapid Iteration**: See changes instantly without device deployment
+- **Visual Regression Testing**: Catch theme breaks early
+- **Documentation**: Previews serve as living style guides
+- **Multi-Theme Testing**: Test light/dark themes side by side
+
+### Preview Patterns Demonstrated
+
+1. **Comprehensive Showcase**: All design tokens in one view
+2. **Component Previews**: Individual theme aspects tested separately
+3. **Multiple Configurations**: Different screen sizes and themes
+4. **Reusable Components**: Color swatches, typography samples
+
+### Testing Strategy
+- Verify all color tokens render correctly
+- Check typography hierarchy and readability
+- Test shape consistency across components
+- Validate custom theme extensions work
