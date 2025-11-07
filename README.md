@@ -33,6 +33,7 @@
 - [Learning Journey](docs/LEARNING.md) - Educational notes and concepts
 - [Development Guide](docs/DEVELOPMENT.md) - Getting started and project setup
 - [Theming System](docs/THEMING.md) - Design system and theme architecture
+- [Package Structure](docs/PACKAGE_STRUCTURE.md) - Project's package structure information
 
 ## 🏗️ Project Structure
 

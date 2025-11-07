@@ -79,3 +79,50 @@ The structure makes it easy to:
 - Check typography hierarchy and readability
 - Test shape consistency across components
 - Validate custom theme extensions work
+
+## 🏗️ Package Structure for Theming
+
+### Theme System Organization
+
+```
+ui/theme/
+├── Color.kt # Color palettes, light/dark schemes
+├── Type.kt # Typography scale and styles
+├── Shape.kt # Shape definitions and tokens
+├── Theme.kt # Main theme composable provider
+├── ThemePreview.kt # Theme testing and documentation
+└── state/
+    └── ThemeState.kt # Theme mode state management
+```
+
+### Component Integration
+```
+ui/components/
+└── ThemeSwitcher.kt # Theme control UI components
+```
+
+### Import Patterns
+```
+// Theme system imports
+import com.yourname.klock.ui.theme.KlockTheme
+import com.yourname.klock.ui.theme.state.ThemeState
+
+// Component imports  
+import com.yourname.klock.ui.components.ThemeSwitcher
+```
+
+## 🎯 Architecture Benefits
+
+### Clear Separation of Concerns
+
+- **Design tokens**: Pure color, type, shape definitions
+- **State management**: Theme mode state isolated in state/package.
+- **UI components**: Reusable theme-aware components
+- **Theme provider**: Main theme composition logic
+
+### Enhanced Maintainability
+
+- Theme changes only affect theme/package
+- New components can easily consume theme system
+- State management is co-located with related functionality
+- Easy to locate and modify theme-related code

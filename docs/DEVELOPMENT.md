@@ -16,12 +16,25 @@
 ### Project Structure
 ```
 app/src/main/java/com/yourname/klock/
+├── ui/ # All UI components and screens
+│ ├── theme/ # Design system: colors, typography, shapes
+│ │ └── previews/ # Preview theme designs
+│ │ └── state/ # Theme state management
+│ ├── components/ # Reusable UI components
+│ │ └── ThemeSwitcher.kt
+│ └── screens/ # App screens
 ├── engine/ # Custom time & animation engines
-├── components/ # Clock hands, face, markers
 ├── animation/ # Custom animation system
-├── time/ # Time management and interpolation
-└── ui/ # Compose screens and previews
+└── time/ # Time management and interpolation
 ```
+
+### Package Organization Rationale
+- **ui/**: All visual components follow a cohesive structure
+- **ui/theme/**: Design system and theming infrastructure
+- **ui/theme/previews**: Preview components and themes in different modes
+- **ui/theme/state/**: Theme-related state management
+- **ui/components/**: Reusable UI components
+- **Separation of Concerns**: UI structure vs business logic vs time management
 
 ## 🏗️ Development Approach
 
