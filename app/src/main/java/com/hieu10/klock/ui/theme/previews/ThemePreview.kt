@@ -22,15 +22,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hieu10.klock.ui.theme.ClockFaceBackground
+import com.hieu10.klock.ui.components.ThemeSelector
+import com.hieu10.klock.ui.components.ThemeToggleButton
+import com.hieu10.klock.ui.theme.ClockColors
+import com.hieu10.klock.ui.theme.LightClockFaceBackground
 import com.hieu10.klock.ui.theme.ClockFaceShapes
-import com.hieu10.klock.ui.theme.ClockHandHour
-import com.hieu10.klock.ui.theme.ClockHandMinute
-import com.hieu10.klock.ui.theme.ClockHandSecond
-import com.hieu10.klock.ui.theme.ClockMarkers
+import com.hieu10.klock.ui.theme.LightClockHandHour
+import com.hieu10.klock.ui.theme.LightClockHandMinute
+import com.hieu10.klock.ui.theme.LightClockHandSecond
+import com.hieu10.klock.ui.theme.LightClockMarkers
 import com.hieu10.klock.ui.theme.KlockShape
 import com.hieu10.klock.ui.theme.KlockTheme
+import com.hieu10.klock.ui.theme.clockColors
 import com.hieu10.klock.ui.theme.klockTypography
+import com.hieu10.klock.ui.theme.state.ThemeMode
+import com.hieu10.klock.ui.theme.state.ThemeState
 
 /**
  * Theme Preview System
@@ -160,11 +166,11 @@ private fun TypographyScaleShowcase() {
 @Composable
 private fun ClockColorShowcase() {
     val clockColors = listOf(
-        "Hour hand" to ClockHandHour,
-        "Minute hand" to ClockHandMinute,
-        "Second hand" to ClockHandSecond,
-        "Clock face" to ClockFaceBackground,
-        "Markers" to ClockMarkers
+        "Hour hand" to LightClockHandHour,
+        "Minute hand" to LightClockHandMinute,
+        "Second hand" to LightClockHandSecond,
+        "Clock face" to LightClockFaceBackground,
+        "Markers" to LightClockMarkers
     )
 
     Row(
@@ -261,6 +267,41 @@ private fun KlockTypographyShowcase() {
     }
 }
 
+@Composable
+private fun ClockColorsDynamicShowcase(clockColors: ClockColors) {
+    val dynamicColors = listOf(
+        "Hour hand" to clockColors.handHour,
+        "Minute hand" to clockColors.handMinute,
+        "Second hand" to clockColors.handSecond,
+        "Face background" to clockColors.faceBackground,
+        "Markers" to clockColors.markers
+    )
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        dynamicColors.forEach { (name, color) ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(color)
+                )
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.labelSmall,
+                    maxLines = 2
+                )
+            }
+        }
+    }
+}
+
 /**
  * Reusable color swatch component for color palette display
  *
@@ -329,10 +370,10 @@ fun ThemeShowcaseLightPreview() {
 }
 
 /**
- * Preview for dark theme
+ * Dark theme preview with actual dark color palette
  *
- * EDUCATIONAL: We can simulate dark theme by using different background colors
- * and eventually by creating a proper dark color palette in our theme system.
+ * EDUCATIONAL: This preview uses our actual dark theme implementation
+ * to verify that all colors and components work correctly in dark mode.
  */
 @Preview(
     name = "Dark Theme",
@@ -341,9 +382,10 @@ fun ThemeShowcaseLightPreview() {
 )
 @Composable
 fun ThemeShowcaseDarkPreview() {
-    // Note: In a real implementation, we'd switch to DarkColorPalette
-    KlockTheme {
+    val darkThemeState = ThemeState(ThemeMode.Dark)
+    KlockTheme(themeState = darkThemeState) {
         Surface(
+            modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
             ThemeShowcase()
@@ -367,6 +409,118 @@ fun ThemeShowcaseCompactPreview() {
     KlockTheme {
         Surface {
             ThemeShowcase()
+        }
+    }
+}
+
+/**
+ * Theme switching demonstration preview
+ * 
+ * EDUCATIONAL: This preview shows both theme switcher components
+ * and demonstrates how they interact with the theme state.
+ */
+@Preview(
+    name = "Theme Switcher",
+    showBackground = true
+)
+@Composable
+fun ThemeSwitcherPreview() {
+    val themeState = ThemeState()
+
+    KlockTheme(themeState = themeState) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Column(
+                Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                Text(
+                    text = "Theme switching demo",
+                    style = MaterialTheme.typography.headlineSmall
+                )
+
+                Text(
+                    text = "Current: ${themeState.getThemeDisplayName()}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                // Theme toggle button
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Text("Quick toggle:")
+                    ThemeToggleButton()
+                }
+
+                // Full theme selector
+                Text("Theme selector:")
+                ThemeSelector()
+
+                // Show current clock colors
+                val clockColors = clockColors(themeState.isDarkTheme)
+                Text(
+                    text = "Clock colors (Dynamic):",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                ClockColorsDynamicShowcase(clockColors)
+            }
+        }
+    }
+}
+
+/**
+ * Side-by-side theme comparison preview
+ *
+ * EDUCATIONAL: This preview demonstrates how to compare light and dark
+ * themes simultaneously, which is very useful for design verification.
+ */
+@Preview(
+    name = "Theme Comparison",
+    widthDp = 800,
+    heightDp = 600
+)
+@Composable
+fun ThemeComparisonPreview() {
+    Row(modifier = Modifier.fillMaxSize()) {
+        // Light theme
+        KlockTheme(themeState = ThemeState(ThemeMode.Light)) {
+            Surface(
+                modifier = Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "Light theme",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    ThemeShowcase()
+                }
+            }
+        }
+
+        // Dark theme
+        KlockTheme(themeState = ThemeState(ThemeMode.Dark)) {
+            Surface(
+                modifier = Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "Dark theme",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    ThemeShowcase()
+                }
+            }
         }
     }
 }

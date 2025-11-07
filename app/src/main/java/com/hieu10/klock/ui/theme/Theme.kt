@@ -9,13 +9,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.hieu10.klock.ui.theme.state.ThemeState
 
 /**
- * Klock Custom Theme System
+ * Enhanced Klock Theme with Dark Theme Support
  *
- * EDUCATIONAL NOTE: We're using MaterialTheme as our foundation but extending it
- * with custom properties specific to our clock app. This demonstrates how to
- * create a scalable theming system that can grow with your app's needs.
+ * EDUCATIONAL NOTE: Our theme system now dynamically switches between
+ * light and dark color palettes based on the theme state.
+ * This demonstrates reactive theming that responds to state changes.
  */
 
 // Custom theme properties that extend MaterialTheme
@@ -34,6 +35,11 @@ val LocalKlockTypography = staticCompositionLocalOf {
     )
 }
 
+// CompositionLocal for theme state to make it available throughout the app
+val LocalThemeState = staticCompositionLocalOf<ThemeState> {
+    error("No ThemeState provided")
+}
+
 /**
  * Main theme composable that wraps MaterialTheme and provides our custom properties
  *
@@ -43,8 +49,11 @@ val LocalKlockTypography = staticCompositionLocalOf {
  */
 @Composable
 fun KlockTheme(
+    themeState: ThemeState = ThemeState(),
     content: @Composable () -> Unit
 ) {
+    val colorScheme = if (themeState.isDarkTheme) DarkColorPalette else LightColorPalette
+
     val typography = KlockTypography(
         clockDisplay = TextStyle(
             fontFamily = FontFamily.Monospace,
@@ -66,14 +75,20 @@ fun KlockTheme(
         )
     )
 
-    MaterialTheme(
-        colorScheme = KlockColorScheme,
-        typography = MaterialTheme.typography,  // We'll override Material typography selectively
+    // Provide both MaterialTheme and outr custom theme state
+    CompositionLocalProvider(
+        LocalThemeState provides themeState
     ) {
-        CompositionLocalProvider(
-            LocalKlockTypography provides typography
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = MaterialTheme.typography,
+            shapes = KlockShape
         ) {
-            content()
+            CompositionLocalProvider(
+                LocalKlockTypography provides typography
+            ) {
+                content()
+            }
         }
     }
 }
@@ -83,3 +98,9 @@ val MaterialTheme.klockTypography: KlockTypography
     @Composable
     @ReadOnlyComposable
     get() = LocalKlockTypography.current
+
+// Extension to access theme state from anywhere in the app
+val MaterialTheme.themeState: ThemeState
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalThemeState.current
