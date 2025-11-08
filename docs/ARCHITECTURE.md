@@ -1,67 +1,114 @@
 # Klock Architecture Guide
 
-## Core Architecture Principles
+## 🏗️ Complete Package Architecture
 
-### 1. Custom Engine Pattern
-We're building our own animation and time management systems to understand:
-- How animation frameworks work internally
-- Time interpolation and easing functions
-- Frame scheduling and performance optimization
-
-### 2. Theme-First Design
-- **Material3 Foundation**: Built upon modern Material Design
-- **Custom Extensions**: Clock-specific design tokens
-- **CompositionLocal**: Theme propagation through UI tree
-- **Semantic Colors**: Purpose-based naming for maintainability
-
-### 3. Component-Based Design
-- **ClockFace**: Handles background, markers, numbers with theme support
-- **ClockHands**: Individual hand drawing and animation with themed styles
-- **TimeEngine**: Manages time state and updates
-- **AnimationEngine**: Handles smooth transitions with custom easing
-
-### 4. Separation of Concerns
-- **Time Logic**: Pure time calculations
-- **Rendering**: Visual representation
-- **Animation**: Motion and transitions
-- **State Management**: Current clock state
-- **Theming**: Design tokens and styling
-
-## Package Architecture
-
-### Package Structure
+### Current Implementation Structure
 
 ```
 ui/
-├── theme/ # Design system foundation
-│ ├── Color.kt # Color palettes and tokens
-│ ├── Type.kt # Typography system
-│ ├── Shape.kt # Shape definitions
-│ ├── Theme.kt # Main theme composable
-│ ├── ThemePreview.kt # Theme testing and previews
-│ └── state/ # Theme state management
-│ └── ThemeState.kt
-├── components/ # Reusable UI components
-│ ├── ThemeSwitcher.kt # Theme control components
-│ └── (future clock components)
-└── screens/ # App screens and main UI
-└── MainActivity.kt
+├── theme/ # Design System Foundation
+│ ├── Color.kt # Semantic color tokens (light/dark)
+│ ├── Type.kt # Typography scale and styles
+│ ├── Shape.kt # Shape definitions and tokens
+│ ├── Theme.kt # Main theme composable provider
+│ ├── ThemePreview.kt # Theme testing and documentation
+│ └── state/
+│ └── ThemeState.kt # Theme mode state management
+├── components/ # Reusable UI Components
+│ ├── clock/ # Clock-specific components
+│ │ ├── ClockFace.kt # Face with markers and numbers
+│ │ └── ClockHand.kt # Individual hand drawing
+│ └── ThemeSwitcher.kt # Theme control interface
+├── models/ # UI Data Models
+│ └── ClockModels.kt # ClockTime, HandStyle, etc.
+└── screens/ # App Screens
+└── MainActivity.kt # Main application screen
 ```
 
-### Architecture Benefits
-- **Cohesive UI Package**: All visual elements in one logical structure
-- **Clear Separation**: Theme system vs components vs screens
-- **State Isolation**: Theme state managed separately from domain state
-- **Scalable Structure**: Easy to add new components and features
+### Future Package Expansion
 
-### Key Architectural Decisions
+```
+engine/ # Business Logic Layer
+├── TimeEngine.kt # Core time management
+├── AnimationEngine.kt # Custom animation system
+└── state/
+└── TimeState.kt # Time and animation state
 
-#### 1. Theme System Organization
-- **theme/**: Pure design tokens and theming logic
-- **theme/state/**: Theme-specific state management
-- **components/**: Theme-aware UI components including ThemeSwitcher
+animation/ # Animation System
+├── interpolators/ # Time interpolation
+├── easing/ # Easing functions
+└── schedulers/ # Frame scheduling
 
-#### 2. State Management Strategy
-- Theme state is UI-specific and belongs in ui/theme/state/
-- Future time state will be in engine/ or time/ packages
-- Clear boundaries between UI state and domain state
+time/ # Time Management
+├── sources/ # Time data sources
+├── models/ # Time data models
+└── utils/ # Time utilities
+```
+
+## 🎯 Architectural Patterns Demonstrated
+
+### 1. Clean Architecture Principles
+- **UI Layer**: Composable components and theme system
+- **Domain Layer**: Clock models and mathematical foundations
+- **Separation**: Clear boundaries between visualization and logic
+
+### 2. Reactive State Management
+- Theme state using CompositionLocal
+- Immutable data models for predictability
+- State hoisting for reusable components
+
+### 3. Component-Based Design
+- **ClockFace**: Handles background and markers
+- **ClockHand**: Individual hand rendering with styles
+- **ThemeSystem**: Consistent design token application
+
+### 4. Mathematical Foundation
+- Trigonometric calculations for circular positioning
+- Coordinate system transformations
+- Efficient rotation using DrawScope transformations
+
+## 🔧 Key Implementation Details
+
+### Theme System
+- Material3 color schemes with semantic naming
+- Dynamic theme switching with state management
+- Custom design tokens for clock-specific elements
+- CompositionLocal for dependency injection
+
+### Custom Drawing
+- Canvas API for low-level drawing operations
+- Mathematical positioning using sin/cos functions
+- Efficient transformations with rotate()
+- Performance-optimized drawing calls
+
+### Data Modeling
+- Value classes for type-safe time representation
+- Data classes for configuration objects
+- Sealed classes for hand type hierarchy
+- Immutable state for predictable UI
+
+## 🚀 New Architectural Steps
+
+### 1. Time Engine Integration
+- Separate time logic from UI components
+- Custom time interpolation for smooth motion
+- Support for multiple time sources
+
+### 2. Animation System
+- Custom frame scheduling
+- Easing functions and interpolation
+- Performance monitoring and optimization
+
+### 3. State Management
+- Centralized clock state management
+- Support for multiple clocks and timezones
+- Persistence for user preferences
+
+## 📚 Educational Value
+
+This architecture demonstrates:
+- **Modern Android Development**: Jetpack Compose best practices
+- **Clean Architecture**: Separation of concerns and testability
+- **Mathematical Programming**: Real-world application of trigonometry
+- **Performance Optimization**: Efficient drawing and state management
+- **Type Safety**: Kotlin language features for robust code
